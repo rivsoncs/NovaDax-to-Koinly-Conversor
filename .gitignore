@@ -1,0 +1,25 @@
+# Arquivos de dados
+*.csv
+*.pdf
+
+# Arquivos de log
+*.log
+
+# Cache do Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Ambiente virtual
+venv/
+env/
+.env/
+
+# IDEs
+.vscode/
+.idea/
+
+# Arquivos temporários
+*.tmp
+*.bak
+*~ 
