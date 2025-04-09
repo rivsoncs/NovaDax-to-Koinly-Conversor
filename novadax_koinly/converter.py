@@ -357,8 +357,10 @@ def convert_novadax_to_koinly(input_file, output_file):
     logging.info(f"Linhas convertidas com sucesso: {converted_rows}")
     logging.info(f"Linhas com erro: {error_rows}")
     logging.info(f"Arquivo convertido salvo em: {output_file}")
-
-if __name__ == "__main__":
-    input_file = "novadax.csv"
-    output_file = "novadax_koinly_custom.csv"
-    convert_novadax_to_koinly(input_file, output_file)
+    
+    return {
+        "total_rows": total_rows,
+        "converted_rows": converted_rows,
+        "error_rows": error_rows,
+        "output_file": output_file
+    } 

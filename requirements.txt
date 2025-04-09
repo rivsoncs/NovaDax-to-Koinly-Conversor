@@ -1,1 +1,2 @@
-pdfplumber==0.10.3
+pdfplumber>=0.7.0
+setuptools>=42.0.0

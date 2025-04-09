@@ -14,6 +14,7 @@ Este projeto facilita a importação de transações da Novadax para o Koinly, u
 - Suporte aprimorado para diversos tipos de transações
 - Sistema de logs para rastreamento de problemas
 - Tratamento inteligente de transações complexas
+- Instalação simplificada com comando único (`nova2k`)
 
 ## 🚀 Funcionalidades
 
@@ -28,7 +29,7 @@ Este projeto facilita a importação de transações da Novadax para o Koinly, u
   - ✅ Convert (conversão entre criptomoedas)
   - ✅ Depósitos e Saques (em reais e criptomoedas)
   - ✅ Taxas de transação
-  - ✅ Staking rewards
+  - ✅ Staking rewards e Bônus
   - ✅ Airdrops
 
 ## 📋 Pré-requisitos
@@ -47,47 +48,143 @@ Este projeto facilita a importação de transações da Novadax para o Koinly, u
 
 ## 🛠️ Instalação
 
-### Método 1: Download Direto (Mais fácil)
-1. Clique no botão verde "Code" acima
-2. Selecione "Download ZIP"
-3. Extraia o arquivo ZIP para uma pasta de sua preferência
+### Método 1: Instalação via pip (recomendado)
 
-### Método 2: Usando Git
 ```bash
-git clone https://github.com/rivsoncs/NovaDax-to-Koinly-Conversor.git
-cd NovaDax-to-Koinly-Conversor
+# Na pasta do projeto
+pip install .
 ```
 
-### Instalando Dependências
-Abra o terminal (ou prompt de comando), navegue até a pasta do projeto e execute:
+Após a instalação, você terá dois comandos disponíveis:
+- `nova2k` (versão simplificada)
+- `novadax-koinly` (nome completo)
+
+Ambos funcionam da mesma forma, mas `nova2k` é mais rápido de digitar!
+
+### Método 2: Clonando o repositório
+
 ```bash
-pip install -r requirements.txt
+# Clone o repositório
+git clone https://github.com/rivsoncs/NovaDax-to-Koinly-Conversor.git
+
+# Navegue até a pasta
+cd NovaDax-to-Koinly-Conversor
+
+# Instale o pacote
+pip install .
+```
+
+### Método 3: Instalação direta do GitHub (sem clonar)
+
+```bash
+# Instale diretamente do GitHub
+pip install git+https://github.com/rivsoncs/NovaDax-to-Koinly-Conversor.git
+```
+
+### Como desinstalar
+
+Se precisar remover o conversor, use o pip para desinstalar:
+
+```bash
+pip uninstall novadax-koinly
+```
+
+### Como atualizar
+
+Para atualizar para a versão mais recente:
+
+```bash
+# Se instalou do GitHub
+pip install --upgrade git+https://github.com/rivsoncs/NovaDax-to-Koinly-Conversor.git
+
+# Se você clonou o repositório
+cd NovaDax-to-Koinly-Conversor
+git pull
+pip install --upgrade .
 ```
 
 ## 📖 Como Usar
 
-### 1. Convertendo PDF para CSV
-1. Coloque seu extrato PDF da Novadax na mesma pasta do projeto
-2. Renomeie o arquivo para `novadax.pdf`
-3. Abra o terminal na pasta do projeto e execute:
-   ```bash
-   python novadax_pdf_to_csv.py
-   ```
-4. Será gerado um arquivo `extrato_novadax.csv`
+### Forma simplificada (recomendada)
 
-### 2. Convertendo CSV para formato Koinly
-1. Se você já tem o CSV da Novadax (seja gerado do PDF ou baixado do site):
-   - Renomeie para `novadax.csv` e coloque na pasta do projeto
-2. Execute:
-   ```bash
-   python converter_novadax_koinly.py
-   ```
-3. Será gerado um arquivo `novadax_koinly_custom.csv`
+Após instalar o pacote, use o comando `nova2k` seguido do nome do arquivo:
 
-### 3. Importando no Koinly
-1. Acesse sua conta no Koinly
-2. Vá em "Wallets" → "Add Wallet" → "Import from File"
-3. Selecione o arquivo `novadax_koinly_custom.csv` gerado
+```bash
+# Para converter um PDF
+nova2k meu_extrato.pdf
+
+# Para converter um CSV
+nova2k novadax.csv
+
+# Com opções personalizadas
+nova2k meu_extrato.pdf -o resultado_koinly.csv
+```
+
+### Forma completa
+
+Se preferir, você também pode usar o comando completo:
+
+```bash
+# Para converter um PDF
+novadax-koinly meu_extrato.pdf -o resultado_koinly.csv
+
+# Para converter um CSV
+novadax-koinly novadax.csv -o resultado_koinly.csv
+```
+
+### Opções disponíveis
+
+```
+nova2k [-h] [-o OUTPUT] [--pdf] [--csv] input_file
+
+Conversor de relatórios da NovaDax para formato Koinly
+
+Argumentos posicionais:
+  input_file            Arquivo de entrada (CSV da NovaDax ou PDF)
+
+Argumentos opcionais:
+  -h, --help            Exibe esta mensagem de ajuda
+  -o OUTPUT, --output OUTPUT
+                        Arquivo de saída (formato Koinly)
+  --pdf                 Força o processamento como PDF
+  --csv                 Força o processamento como CSV
+```
+
+### Usando os scripts manualmente
+
+Se preferir, você ainda pode usar os scripts diretamente:
+
+```bash
+# Para extrair CSV de um PDF
+python novadax_pdf_to_csv.py
+
+# Para converter CSV para formato Koinly
+python converter_novadax_koinly.py
+```
+
+## 🔄 Como funciona a conversão
+
+O conversor detecta automaticamente o tipo de arquivo pela extensão e executa o fluxo apropriado:
+
+### Para arquivos PDF:
+1. **Extração do PDF**: O conversor analisa o PDF e extrai as tabelas de transações
+2. **Geração de CSV intermediário**: Cria um arquivo CSV com os dados brutos extraídos
+3. **Conversão para Koinly**: Transforma os dados no formato compatível com Koinly
+4. **Arquivo final**: Gera o arquivo CSV pronto para importação no Koinly
+
+### Para arquivos CSV:
+1. **Leitura do CSV**: Lê diretamente o arquivo CSV da NovaDax
+2. **Conversão para Koinly**: Transforma os dados no formato compatível com Koinly
+3. **Arquivo final**: Gera o arquivo CSV pronto para importação no Koinly
+
+### Processamento de transações:
+- Cada linha do extrato é analisada individualmente
+- O tipo de transação é identificado (compra, venda, depósito, etc.)
+- Os valores são convertidos para o formato adequado
+- As taxas de transação são associadas às operações correspondentes
+- Transações de bônus e staking são marcadas como "reward"
+
+Tudo isso é feito automaticamente com um único comando. O usuário não precisa se preocupar com qual script chamar ou qual sequência de passos seguir - o `nova2k` cuida de tudo!
 
 ## 🔍 Logs e Depuração
 
@@ -112,13 +209,18 @@ pip install -r requirements.txt
 
 ### Arquivo PDF não é reconhecido
 - Certifique-se de que o PDF não está protegido por senha
-- Verifique se o nome do arquivo está correto: `novadax.pdf`
-- Confirme que o arquivo está na mesma pasta do script
+- Verifique se o PDF foi gerado corretamente pela NovaDax
+- Certifique-se de que a biblioteca pdfplumber está instalada corretamente
 
 ### Valores incorretos no CSV final
 - Verifique o arquivo de log para identificar problemas
 - Confirme se o PDF/CSV original está no formato esperado
 - Compare os valores manualmente com o extrato original
+
+### Erros ao executar o comando `nova2k`
+- Verifique se o pacote foi instalado corretamente
+- Tente reinstalar usando `pip install --force-reinstall .`
+- Verifique se você está usando Python 3.6 ou superior
 
 ## 🤝 Contribuindo
 
